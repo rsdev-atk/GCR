@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context="ru.rsdev.gcr.MainActivity">
 
@@ -23,12 +24,49 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu_down"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="150dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:elevation="6dp"
+        android:visibility="invisible"
+
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_fab_size="normal"
+        fab:menu_openDirection="down">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbutton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/galochka"
+            fab:fab_size="normal"
+            fab:fab_label="Сдаться" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbutton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/galochka"
+            fab:fab_size="normal"
+            fab:fab_label="Подсказка" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbutton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/abc_btn_rating_star_off_mtrl_alpha"
+            fab:fab_size="normal"
+            fab:fab_label="Ответить" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

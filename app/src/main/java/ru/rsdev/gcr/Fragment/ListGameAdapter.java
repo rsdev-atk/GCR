@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ru.rsdev.gcr.Game.SingleGame;
 import ru.rsdev.gcr.R;
 
 /**
@@ -18,21 +19,26 @@ public class ListGameAdapter extends ArrayAdapter {
 
     ArrayList<String> list;
 
-    public ListGameAdapter(Context context, ArrayList listAnswer) {
-        super(context, 0, listAnswer);
-        this.list = listAnswer;
+    public ListGameAdapter(Context context, ArrayList allAnswer) {
+        super(context, 0, allAnswer);
+        this.list = allAnswer;
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        int count = SingleGame.getInstance().getAllAnswerList().size();
+
         if (convertView == null) {
-            if (position % 2 == 0){
+            if ((count-position) % 2 == 0){
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list_left, null);
             }
             else {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list_right, null);
             }
         }
+
         TextView tvLabel = (TextView) convertView.findViewById(R.id.textInfo);
         tvLabel.setText(list.get(position));
         return convertView;

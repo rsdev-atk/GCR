@@ -1,5 +1,9 @@
 package ru.rsdev.gcr.Algorithm;
 
+import java.util.ArrayList;
+
+import ru.rsdev.gcr.Game.SingleGame;
+
 public class GameAlgorithm {
     //Список мусорных букв, на которые не нечинаются города (ё и й заменяются на соответствующие е и и)
     private char badLetters[] = {'ъ','ь','ы','ц'};
@@ -56,6 +60,23 @@ public class GameAlgorithm {
         lastCharOldAnswer = Character.toLowerCase(lastCharOldAnswer);
         firstCharUserAnswer = Character.toLowerCase(firstCharUserAnswer);
         return lastCharOldAnswer==firstCharUserAnswer;
+    }
+
+    //Проверка на уникальность
+    public boolean chekUnic(String userAnswer){
+        boolean result=false;
+        ArrayList<String> list = SingleGame.getInstance().getAllAnswerList();
+
+        for (int i = 0; i<list.size() ; i++){
+            if(list.get(i).equals(userAnswer)) {
+                result = true;
+                break;
+            }
+        }
+
+
+
+        return result;
     }
 
 

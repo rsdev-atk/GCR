@@ -2,9 +2,7 @@ package ru.rsdev.gcr;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,6 +30,8 @@ public class MainActivity extends AppCompatActivity
     ListGameFragment listGameFragment;
     ResultFragment resultFragment;
 
+    public com.github.clans.fab.FloatingActionMenu floatingActionMenu;
+    public com.github.clans.fab.FloatingActionButton fbutton3,fbutton2,fbutton1;
 
 
     @Override
@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity
         //Полноэкранный режим
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initComponents();
+
+
+//        SingleGame.getInstance().addUserAnswer("000");
+
         showNewGame();
 
     }
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +69,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        */
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -72,6 +79,65 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        floatingActionMenu = (com.github.clans.fab.FloatingActionMenu)findViewById(R.id.menu_down);
+        fbutton1 = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.fbutton1);
+        fbutton2 = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.fbutton2);
+        fbutton3 = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.fbutton3);
+
+
+
+        fbutton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Ответ1",Toast.LENGTH_SHORT).show();
+
+                String answerString = topGameFrafment.editText.getText().toString();
+
+
+                answerString = SingleGame.getInstance().gameAlgorithm.getCorrectCityName(answerString);
+                //Проверки ответа на соответствие
+                //Верная буква
+                String lastAnswer = SingleGame.getInstance().getAllAnswerItem(0);
+                if(!SingleGame.getInstance().gameAlgorithm.checkFirstLatter(answerString, lastAnswer)){
+                    Toast.makeText(getApplicationContext(), "Неверная первая буква",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Уникальность
+                    if(SingleGame.getInstance().gameAlgorithm.chekUnic(answerString))
+                    {
+                        Toast.makeText(getApplicationContext(), "Повтор",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        //Проверка на существование города
+                        if(!SingleGame.getInstance().dbHelper.findCityByUserAnswer(answerString)){
+                            Toast.makeText(getApplicationContext(), "Город не найден",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //Публикуем верный ответ пользователя
+                            SingleGame.getInstance().addAllAnswer(answerString);
+                            listGameFragment.showDataInList();
+                            showNumberStroke();
+                            //Ответ ПК
+                            String psAnswer = SingleGame.getInstance().getPCAnswer(answerString);
+                            if(psAnswer.equals("GameOver")){
+                                SingleGame.getInstance().gameOver();
+                            }
+                            else {
+                                //Публикуем верный ответ ПК
+                                SingleGame.getInstance().addAllAnswer(psAnswer);
+                                listGameFragment.showDataInList();
+                                showFirstChar();
+                                showNumberStroke();
+
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
 
         previewFragment = new PreviewFragment();
         topGameFrafment = new TopGameFrafment();
@@ -152,6 +218,9 @@ public class MainActivity extends AppCompatActivity
         fTrans.remove(previewFragment);
         fTrans.commit();
 
+        //Показываем плавающее меню
+        floatingActionMenu.setVisibility(View.VISIBLE);
+
         //Передача параметров сложности игры и времени
 
         SingleGame.getInstance().connectDB(this);
@@ -162,26 +231,70 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+    //Ответ пользователя
     @Override
     public void onAnswerButtonClick(String answerString) {
-        Toast.makeText(this,"111",Toast.LENGTH_SHORT).show();
+
+
+        answerString = SingleGame.getInstance().gameAlgorithm.getCorrectCityName(answerString);
+        //Проверки ответа на соответствие
+        //Верная буква
+        String lastAnswer = SingleGame.getInstance().getAllAnswerItem(0);
+        if(!SingleGame.getInstance().gameAlgorithm.checkFirstLatter(answerString, lastAnswer)){
+            Toast.makeText(this, "Неверная первая буква",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            //Уникальность
+            if(SingleGame.getInstance().gameAlgorithm.chekUnic(answerString))
+            {
+                Toast.makeText(this, "Повтор",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                //Проверка на существование города
+                if(!SingleGame.getInstance().dbHelper.findCityByUserAnswer(answerString)){
+                    Toast.makeText(this, "Город не найден",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Публикуем верный ответ пользователя
+                    SingleGame.getInstance().addAllAnswer(answerString);
+                    listGameFragment.showDataInList();
+                    showNumberStroke();
+                    //Ответ ПК
+                    String psAnswer = SingleGame.getInstance().getPCAnswer(answerString);
+                    if(psAnswer.equals("GameOver")){
+                        SingleGame.getInstance().gameOver();
+                    }
+                    else {
+                        //Публикуем верный ответ ПК
+                        SingleGame.getInstance().addAllAnswer(psAnswer);
+                        listGameFragment.showDataInList();
+                        showFirstChar();
+                        showNumberStroke();
+
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void onAnswerButtonClick() {
-        String test = SingleGame.getInstance().getAndroidAnswer(0);
-        Toast.makeText(this,test,Toast.LENGTH_SHORT).show();
+        showFirstChar();
+    }
 
-        String firstAnswer = SingleGame.getInstance().getAndroidAnswer(0);
-        char lastChar = SingleGame.getInstance().getLastLetter(firstAnswer);
+    private void showFirstChar() {
+        //int positionAnswer = SingleGame.getInstance().getAllAnswerList().size()-1;
+        String userAnswer = SingleGame.getInstance().getAllAnswerItem(0);
+        char lastChar = SingleGame.getInstance().getLastLetter(userAnswer);
         topGameFrafment.editText.setText(String.valueOf(lastChar).toUpperCase());
         topGameFrafment.editText.requestFocus();
         topGameFrafment.editText.setSelection(1);
 
-
-
     }
 
+    private void showNumberStroke(){
+        topGameFrafment.textView8.setText(String.valueOf(SingleGame.getInstance().getAllAnswerList().size()));
+    }
 
 
     @Override

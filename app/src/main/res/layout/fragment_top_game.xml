@@ -1,13 +1,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="wrap_content" tools:context="ru.rsdev.gcr.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    tools:context="ru.rsdev.gcr.MainActivity">
 
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/accent_material_light"
+        android:padding="6dp">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -107,8 +111,36 @@
             android:text="Ответить"
             android:id="@+id/button2"
             android:layout_row="1"
-            android:layout_column="2" />
+            android:layout_column="2"
 
-    </LinearLayout>
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </LinearLayout >
+
+
+
+
+
+
+
+
+
+
+
+
 
 </FrameLayout>

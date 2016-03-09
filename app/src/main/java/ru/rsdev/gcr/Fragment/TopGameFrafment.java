@@ -20,12 +20,14 @@ public class TopGameFrafment extends Fragment {
     public EditText editText;
     public TextView textView8;
     public TextView textView7;
+    public Button button2;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_top_game, null);
 
-        Button button2 = (Button) v.findViewById(R.id.button2);
+
+        button2 = (Button) v.findViewById(R.id.button2);
         editText = (EditText)v.findViewById(R.id.editText);
         editText.setText("");
 
